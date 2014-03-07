@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<style type="text/css">
+		div.background{
+			background-image: url('rsz_calc.png');
+			height: 568px;
+			width: 320px;				
+		}
+		div.status_bar{
+			height: 20px;
+			width: 100%;
+		}
+		p.status_bar_font{
+			padding-top: 2px;
+			font-size: 13px;
+			color: rgb(191,191,191);
+			font-family: "Helvetica", sans-serif;
+			font-weight: bold;
+		}
+		p.clock{
+			text-align: center;
+		}
+		p.battery_text{
+			position: absolute;
+			top: 0;
+			left: 278px;
+			text-align: right;
+		}
+		canvas.battery_image{
+			position: absolute;
+			top: 19px;
+			left: 306px;
+		}
+		div.calc_screen{
+			height:88px;
+			width: 315px; /* gives some space on right side */
+		}
+		p.calc_screen_font{
+			width: 320px;
+			display: table-cell;
+			vertical-align: middle;
+			font-size: 78px; /* default = 78 */
+			text-align: right;
+			color: black;
+			font-family: "Helvetica", sans-serif;
+		}
+
+		/* set up for regular-height number pad buttons */
+		#buttons{position:relative;}
+		#buttons div{position:absolute;}
+		#buttons div, #buttons a{height:55px;display:block;}
+
+		/* position of 0 button*/
+		#zero{left:9px;width:145px;top:392px;height:55px;}
+		#zero a:hover{background: url('rsz_calc_all_buttons.png') -10px 68px;}
+		/* position of decimal button*/
+		#decimal{left:166px;width:66px;top:392px;height:55px;}
+		#decimal a:hover{background: url('rsz_calc_all_buttons.png') -166px 68px;}
+		/* position of 1 button*/
+		#one{left:9px;width:66px;top:316px;height:55px;}
+		#one a:hover{background: url('rsz_calc_all_buttons.png') -10px 144px;}
+		/* position of 2 button*/
+		#two{left:88px;width:66px;top:316px;height:55px;}
+		#two a:hover{background: url('rsz_calc_all_buttons.png') -88px 144px;}
+		/* position of 3 button*/
+		#three{left:166px;width:66px;top:316px;height:55px;}
+		#three a:hover{background: url('rsz_calc_all_buttons.png') -166px 144px;}
+		/* position of 4 button*/
+		#four{left:10px;width:66px;top:240px;height:55px;}
+		#four a:hover{background: url('rsz_calc_all_buttons.png') -10px 220px;}
+		/* position of 5 button*/
+		#five{left:88px;width:66px;top:240px;height:55px;}
+		#five a:hover{background: url('rsz_calc_all_buttons.png') -88px 220px;}
+		/* position of 6 button*/
+		#six{left:166px;width:66px;top:240px;height:55px;}
+		#six a:hover{background: url('rsz_calc_all_buttons.png') -166px 220px;}
+		/* position of plus button*/
+		#plus{left:244px;width:66px;top:240px;height:55px;}
+		#plus a:hover{background: url('rsz_calc_all_buttons.png') -244px 220px;}
+		/* position of 7 button*/
+		#seven{left:10px;width:66px;top:164px;height:55px;}
+		#seven a:hover{background: url('rsz_calc_all_buttons.png') -10px 296px;}
+		/* position of 8 button*/
+		#eight{left:88px;width:66px;top:164px;height:55px;}
+		#eight a:hover{background: url('rsz_calc_all_buttons.png') -88px 296px;}
+		/* position of 9 button*/
+		#nine{left:166px;width:66px;top:164px;height:55px;}
+		#nine a:hover{background: url('rsz_calc_all_buttons.png') -166px 296px;}
+		/* position of minus button*/
+		#minus{left:244px;width:66px;top:164px;height:55px;}
+		#minus a:hover{background: url('rsz_calc_all_buttons.png') -244px 296px;}
+		/* position of clear button*/
+		#clear{left:10px;width:66px;top:88px;height:55px;}
+		#clear a:hover{background: url('rsz_calc_all_buttons.png') -10px 372px;}
+		/* position of plus/minus button*/
+		#plus_minus{left:88px;width:66px;top:88px;height:55px;}
+		#plus_minus a:hover{background: url('rsz_calc_all_buttons.png') -88px 372px;}
+		/* position of divide button*/
+		#divide{left:166px;width:66px;top:88px;height:55px;}
+		#divide a:hover{background: url('rsz_calc_all_buttons.png') -166px 372px;}
+		/* position of multiply button*/
+		#multiply{left:244px;width:66px;top:88px;height:55px;}
+		#multiply a:hover{background: url('rsz_calc_all_buttons.png') -244px 372px;}
+		/* position of mc button*/
+		#mc{left:10px;width:66px;top:12px;height:55px;}
+		#mc a:hover{background: url('rsz_calc_all_buttons.png') -10px 448px;}
+		/* position of m+ button*/
+		#m_plus{left:88px;width:66px;top:12px;height:55px;}
+		#m_plus a:hover{background: url('rsz_calc_all_buttons.png') -88px 448px;}
+		/* position of m- button*/
+		#m_minus{left:166px;width:66px;top:12px;height:55px;}
+		#m_minus a:hover{background: url('rsz_calc_all_buttons.png') -166px 448px;}
+		/* position of mr button*/
+		#mr{left:244px;width:66px;top:12px;height:55px;}
+		#mr a:hover{background: url('rsz_calc_all_buttons.png') -244px 448px;}
+
+		/* equal button is taller than the others */
+		#buttons_tall{position:relative;}
+		#buttons_tall div{position:absolute;}
+		#buttons_tall div, #buttons_tall a{height:131px;display:block;}
+		/* position of equal button*/
+		#equal{left:244px;width:66px;top:316px;height:131px;}
+		#equal a:hover{background: url('rsz_calc_all_buttons.png') -244px 144px;}
+
+	</style>
+	<script type="text/javascript">
+		var percent; // holds battery percent
+		var screen_num=0; // holds the number displayed on the screen
+
+		/* starts some functions to get the program running*/
+		function initialize(){
+			startTime();
+			randomBatteryText();
+			randomBatteryImage();
+		}
+		/* creates the current time for the display*/
+		function startTime(){
+			var today = new Date();
+			var h = today.getHours();
+			var m = today.getMinutes();
+			var tod = "AM"
+			// format hours if PM
+			if (h > 12){
+				h = h - 12;
+				tod = "PM"
+			}
+			// add a zero in front of numbers < 10
+			if (m < 10){
+				m = "0" + m;
+			}
+			document.getElementById("time").innerHTML = h + ":" + m + " " + tod;
+		}
+		/* creates the battery precentage */
+		function randomBatteryText(){
+			 // random number between 0 and 99 so it's only 2 digits
+			percent = Math.floor((Math.random()*100));
+			// make sure it's at least 21 so icon won't be red
+			// not truely random now but it's quick
+			if (percent < 20){
+				percent += 20;
+			}
+			document.getElementById("battery_percent_text").innerHTML = percent + "%";
+		}
+		/* creates the battery image from the battery percentage */
+		function randomBatteryImage(){
+			var c=document.getElementById("battery_image");
+			var ctx=c.getContext("2d");
+			ctx.fillStyle="#BFBFBF";
+			var width = 15*(percent/100);
+			ctx.fillRect(0,0,width,7);
+		}
+		/* creates the number for the screen from button presses 0-9 and decimal point */
+		function numberFromButtons(button){
+			if (button == '.') { // determine if/where the decimal point should go
+				if (screen_num.toString().indexOf('.') < 0){ // not already a decimal point
+					screen_num = screen_num.toString().concat('.'); // add decimal point to end
+				}
+			}
+			else if (screen_num.toString().indexOf('.') >= 0){ // decimal point in number already
+				screen_num = screen_num.toString().concat(button); //add number after decimal 
+			}
+			else { // push numbers to tens place and put button in ones place
+				screen_num = (screen_num*10) + button; 
+			}
+			readableNumber(screen_num);
+		}
+		/* Limits the number to 9 digits and puts commas for the thousands and millions*/
+		function readableNumber(num){
+			screen_text = num.toString();
+			num_length = screen_text.length;
+			/* limit the length to 9 numbers */
+			if (screen_text.indexOf('.') >= 0){
+				char_limit = 10; // if there's a decimal point, count 9 numbers and decimal point
+			}
+			else {
+				char_limit = 9; // no decimal point, just 9 numbers
+			}
+			if (num_length > char_limit){
+				screen_text = screen_text.substring(0,char_limit);
+			}
+			/* break number above and below decimal point because commas only go above it*/
+			dp_location = screen_text.indexOf('.');
+			if (dp_location >= 0){ // there is a decimal point
+				above_dp = screen_text.substring(0,dp_location);
+				below_dp = screen_text.substring(dp_location, num_length);
+			}
+			else {
+				above_dp = screen_text;
+				below_dp = "";
+			}
+			above_dp_length = above_dp.length;
+			/* add commas if number is in the millions */
+			if (above_dp >= 1000000){
+				screen_output = above_dp.substring(0,(above_dp_length-6))+","+
+								above_dp.substring((above_dp_length-6),(above_dp_length-3))+","+
+								above_dp.substring((above_dp_length-3),above_dp_length)+
+								below_dp;
+			}
+			/* add comma is number is in the thousands */
+			else if (above_dp >= 1000){
+				screen_output = above_dp.substring(0,(above_dp_length-3))+","+
+								above_dp.substring((above_dp_length-3),above_dp_length)+
+								below_dp;
+			}
+			else{
+				screen_output = screen_text;
+			}
+			screen_font_size(screen_output);
+		}
+		/* adjusts the font size so the text stays on the screen */
+		function screen_font_size(screen_output){
+			num_length = screen_output.length;
+			// adjust font size and center it vertically when in the millions range
+			/*if (num_length == 6 && screen_num < 0){ // negitive number is slightly smaller
+			}*/
+			/* all 3 of these lengths will also need another that checks if negative */
+			if (num_length == 7){ 
+				document.getElementById("screen").style.fontSize="68px";
+				document.getElementById("screen").style.paddingTop="6px";
+			}
+			if (num_length == 8){ 
+				document.getElementById("screen").style.fontSize="62px";
+				document.getElementById("screen").style.paddingTop="8px";
+			}
+			if (num_length == 9){ 
+				document.getElementById("screen").style.fontSize="56px";
+				document.getElementById("screen").style.paddingTop="10px";
+			}
+
+			document.getElementById("screen").innerHTML = screen_output;
+		}
+
+		
+	</script>
+</head>
+
+<body onload="initialize()">
+
+<div class="background">
+
+	<div class="status_bar">
+		<p class="status_bar_font clock" id="time"></p>	
+		<p class="status_bar_font battery_text" id="battery_percent_text"></p>
+		<canvas class="battery_image" id="battery_image"></canvas>
+	</div>
+
+	<div class="calc_screen">
+		<p class="calc_screen_font" id="screen">0</p>
+	</div>
+
+	<div id="buttons">
+
+		<div id="decimal">
+			<a onclick="numberFromButtons('.')"></a>
+		</div>
+		
+		<div id="zero">
+			<a onclick="numberFromButtons(0)"></a>
+		</div>
+		<div id="one">
+			<a onclick="numberFromButtons(1)"></a>
+		</div>
+		<div id="two">
+			<a onclick="numberFromButtons(2)"></a>
+		</div>
+		<div id="three">
+			<a onclick="numberFromButtons(3)"></a>
+		</div>
+		<div id="four">
+			<a onclick="numberFromButtons(4)"></a>
+		</div>
+		<div id="five">
+			<a onclick="numberFromButtons(5)"></a>
+		</div>
+		<div id="six">
+			<a onclick="numberFromButtons(6)"></a>
+		</div>
+		<div id="seven">
+			<a onclick="numberFromButtons(7)"></a>
+		</div>
+		<div id="eight">
+			<a onclick="numberFromButtons(8)"></a>
+		</div>
+		<div id="nine">
+			<a onclick="numberFromButtons(9)"></a>
+		</div>
+
+		<div id="plus">
+			<a onclick=""></a>
+		</div>
+		<div id="minus">
+			<a onclick=""></a>
+		</div>
+		<div id="multiply">
+			<a onclick=""></a>
+		</div>
+		<div id="divide">
+			<a onclick=""></a>
+		</div>
+
+		<div id="plus_minus">
+			<a onclick=""></a>
+		</div>
+
+		<div id="clear">
+			<a onclick=""></a>
+		</div>
+
+		<div id="mc">
+			<a onclick=""></a>
+		</div>
+		<div id="m_plus">
+			<a onclick=""></a>
+		</div>
+		<div id="m_minus">
+			<a onclick=""></a>
+		</div>
+		<div id="mr">
+			<a onclick=""></a>
+		</div>
+
+	</div>
+	<div id="buttons_tall">
+		<div id="equal">
+			<a onclick=""></a>
+		</div>
+	</div>
+
+</div>
+
+</body>
+</html>
