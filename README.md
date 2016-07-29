@@ -5,6 +5,8 @@ Clone of the iOS6 calculator app for the web
 
 I started this project to learn CSS and Javascript. Currently this app does not have the full functionality of the iOS6 calculator app.
 
+Update: Looks like somebody beat me to completion. Amazing project by [@mjackson](https://twitter.com/mjackson): ["I re-built the classic iOS Calculator in React"](https://codepen.io/mjijackson/pen/xOzyGX)
+
 What it can and cannot do
 --
 * Status bar shows time the page was loaded and does not change
