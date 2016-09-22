@@ -29,5 +29,3 @@ Files
 This code is a work in progress and will continue to be updated.
 
 Visit my blog at [http://tinkeringetc.blogspot.com/](http://tinkeringetc.blogspot.com/)
-
-This work is licensed under a Creative Commons Attribution 3.0 Unported License.
